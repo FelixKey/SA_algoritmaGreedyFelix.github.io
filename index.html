@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css" />
+    <title>Project Akhir Strategi Algoritmik</title>
+  </head>
+  <body>
+    <div style="padding: 15px">
+      <div style="text-align: center;">
+        <label style="font-size: 30px; font-weight: 800;">PENJADWALAN PEKERJAAN</label>
+      </div>
+      <hr/>
+      <div style="display: flex;justify-content: center;">
+        <div class="card" id="card-title">
+          <div style="display: flex; gap: 25px; margin-top: 15px;">
+            <div style="width:200px">
+              <label> Tipe Greedy</label>
+              <select class="greedy_tipe">
+                <option value="Max">Max</option>
+                <option value="Min">Min</option>
+              </select>
+            </div>
+            <div style="width:200px">
+              <label> Variasi Greedy</label>
+              <select class="greedy_variasi">
+                <option value="profit">Profit</option>
+                <option value="weight">Weight</option>
+                <option value="density">Density</option>
+              </select>
+            </div>
+            <button class="button" type="button" onclick="hitungData()" id="button_hitung">Hitung</button>
+          </div>
+          <div style="display: flex;margin-top: 15px;">
+            <div>
+              <div>Masukkan Jumlah Pekerjaan</div>
+              <input type="number" style="width: 200px" id="jumlah_pekerjaan"/>
+            </div>
+            <button class="button" type="button" onclick="addPekerjaan()" id="button_addPekerjaan">Add </button>
+            <div style="width:200px">
+              <label> Deadline (Menit)</label>
+              <input type="number" id="deadline">
+            </div>
+            <button class="button" type="button" onclick="simpanData()" id="button_simpan">Simpan Data</button>
+          </div>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr">
+        <div id="hasil" style="margin-top: 35px;">
+              
+        </div>
+        <div id="hasil_hitung" style="margin-top: 35px;">
+              
+        </div>
+      </div>
+      <div id="pekerjaan" style="display: grid; grid-template-columns: 1fr 1fr">
+      </div>
+    </div>
+    
+    </div>
+  </body>
+  <script>
+    const hasil = document.querySelector("#hasil");
+    const hasil_hitung = document.querySelector("#hasil_hitung");
+    
+    let nama_pekerjaan =[];
+    let waktu = [];
+    let profit =[];
+    
+    let jadwal_pekerjaan;
+    let total_profit;
+    let total_waktu;
+    let sisa_waktu;
+
+
+    function greedyMaxProfit(array) {
+      array.sort((a, b) => b[2] - a[2]);
+      let jadwal_pekerjaan = [];
+      let deadline_time = parseInt(document.querySelector("#deadline").value);
+      let total_time = 0;
+      let total_profit = 0;
+
+      for (let i = 0; i < array.length; i++) {
+        let task = array[i];
+        if (deadline_time >= task[1]) {
+          jadwal_pekerjaan.push(task[0]);
+          total_profit += task[2];
+          deadline_time -= task[1];
+          total_time += task[1];
+        }
+      }
+
+      let total_waktu = total_time;
+      let sisa_waktu = deadline_time;
+      return [jadwal_pekerjaan,total_profit,total_waktu,sisa_waktu];
+    }
+
+    function greedyMinProfit(array) {
+      array.sort((a, b) => a[2] - b[2]);
+      let jadwal_pekerjaan = [];
+      let deadline_time = parseInt(document.querySelector("#deadline").value);
+      let total_time = 0;
+      let total_profit = 0;
+
+      for (let i = 0; i < array.length; i++) {
+        let task = array[i];
+        if (deadline_time >= task[1]) {
+          jadwal_pekerjaan.push(task[0]);
+          total_profit += task[2];
+          deadline_time -= task[1];
+          total_time += task[1];
+        }
+      }
+
+      let total_waktu = total_time;
+      let sisa_waktu = deadline_time;
+      return [jadwal_pekerjaan,total_profit,total_waktu,sisa_waktu];
+    }
+
+    function greedyMaxWeight(array) {
+      array.sort((a, b) => b[1] - a[1]);
+      let jadwal_pekerjaan = [];
+      let deadline_time = parseInt(document.querySelector("#deadline").value);
+      let total_time = 0;
+      let total_profit = 0;
+
+      for (let i = 0; i < array.length; i++) {
+        let task = array[i];
+        if (deadline_time >= task[1]) {
+          jadwal_pekerjaan.push(task[0]);
+          total_profit += task[2];
+          deadline_time -= task[1];
+          total_time += task[1];
+        }
+      }
+
+      let total_waktu = total_time;
+      let sisa_waktu = deadline_time;
+      return [jadwal_pekerjaan,total_profit,total_waktu,sisa_waktu];
+    }
+
+    function greedyMinWeight(array) {
+      array.sort((a, b) => a[1] - b[1]);
+      let jadwal_pekerjaan = [];
+      let deadline_time = parseInt(document.querySelector("#deadline").value);
+      let total_time = 0;
+      let total_profit = 0;
+
+      for (let i = 0; i < array.length; i++) {
+        let task = array[i];
+        if (deadline_time >= task[1]) {
+          jadwal_pekerjaan.push(task[0]);
+          total_profit += task[2];
+          deadline_time -= task[1];
+          total_time += task[1];
+        }
+      }
+
+      let total_waktu = total_time;
+      let sisa_waktu = deadline_time;
+      return [jadwal_pekerjaan,total_profit,total_waktu,sisa_waktu];
+    }
+
+    function greedyMaxDensity(array) {
+      array.sort((a, b) => b[2] / b[1] - a[2] / a[1]);
+      let jadwal_pekerjaan = [];
+      let deadline_time = parseInt(document.querySelector("#deadline").value);
+      let total_time = 0;
+      let total_profit = 0;
+
+      for (let i = 0; i < array.length; i++) {
+        let task = array[i];
+        if (deadline_time >= task[1]) {
+          jadwal_pekerjaan.push(task[0]);
+          total_profit += task[2];
+          deadline_time -= task[1];
+          total_time += task[1];
+        }
+      }
+
+      let total_waktu = total_time;
+      let sisa_waktu = deadline_time;
+      return [jadwal_pekerjaan,total_profit,total_waktu,sisa_waktu];
+    }
+
+    function greedyMinDensity(array) {
+      array.sort((a, b) => b[2] / b[1] - a[2] / a[1]);
+      let jadwal_pekerjaan = [];
+      let deadline_time = parseInt(document.querySelector("#deadline").value);
+      let total_time = 0;
+      let total_profit = 0;
+
+      for (let i = 0; i < array.length; i++) {
+        let task = array[i];
+        if (deadline_time >= task[1]) {
+          jadwal_pekerjaan.push(task[0]);
+          total_profit += task[2];
+          deadline_time -= task[1];
+          total_time += task[1];
+        }
+      }
+
+      let total_waktu = total_time;
+      let sisa_waktu = deadline_time;
+      return [jadwal_pekerjaan,total_profit,total_waktu,sisa_waktu];
+    }
+
+    function addPekerjaan() {
+      const Jumlah = document.querySelector("#jumlah_pekerjaan").value;
+      const pekerjaan = document.querySelector("#pekerjaan");
+      let card = "";
+
+      for (let i = 1; i <= Jumlah; i++) {
+        card += `
+        <div class="card">
+            <div>
+              <label>Nama Karyawan</label>
+              <input class="input" type="text" id="namaKaryawan-${i}"/>
+            </div>
+            <div>
+              <label>Nama Pekerjaan</label>
+              <input class="input" type="text" id="nama-${i}"/>
+            </div>
+            <div>
+              <label>Waktu (Menit)</label>
+              <input class="input" type="number" id="waktu-${i}" />
+            </div>
+            <div>
+              <label>Profit (Rupiah)</label>
+              <input class="input" type="number" id="profit-${i}"/>
+            </div>
+        </div>
+            `;
+      }
+
+      pekerjaan.innerHTML = card;
+    }
+
+    function simpanData() {
+      const hasil = document.querySelector("#hasil");
+      const Jumlah = document.querySelector("#jumlah_pekerjaan").value;
+      const waktu_deadline = parseInt(document.querySelector("#deadline").value);
+      let table="";
+      
+      nama_karyawan = []
+      nama_pekerjaan = []
+      waktu = []
+      profit = []
+
+      table+=`
+      <table border=1 class="tabel">
+        <tr>
+          <th>Nama Karyawan</th>
+          <th>Nama Pekerjaan</th>
+          <th>Waktu</th>
+          <th>Profit</th>
+        </tr>
+      `
+      for (let i = 1; i <= Jumlah; i++) {
+        nama_karyawan.push(document.querySelector("#namaKaryawan-"+i).value)
+        nama_pekerjaan.push(document.querySelector("#nama-"+i).value)
+        waktu.push(parseInt(document.querySelector("#waktu-"+i).value))
+        profit.push(parseInt(document.querySelector("#profit-"+i).value))
+
+        table += `
+        <tr>
+          <td>${nama_karyawan[i-1]}</td>
+          <td>${nama_pekerjaan[i-1]}</td>
+          <td>${waktu[i-1]}</td>
+          <td>${profit[i-1]}</td>
+        </tr>
+        ` 
+      }
+
+      table+=`
+      <tr>
+        <td colspan = 4>Waktu Deadline: ${waktu_deadline}</td>
+      </tr>
+      </table>
+      `
+      hasil.innerHTML = table
+    }
+
+    function hitungData(){
+      const greedy_tipe = document.querySelector('.greedy_tipe').value;
+      const greedy_variasi = document.querySelector('.greedy_variasi').value;
+      let newArray = [];
+            for (let i = 0; i < nama_pekerjaan.length; i++) {
+            newArray.push([nama_pekerjaan[i], waktu[i], profit[i]]);
+            }
+
+            if (greedy_variasi=="profit") {
+                if (greedy_tipe=="Min") {
+                    [jadwal_pekerjaan,total_profit,total_waktu,sisa_waktu]=greedyMinProfit(newArray);
+                }
+                else if(greedy_tipe=="Max"){
+                    [jadwal_pekerjaan,total_profit,total_waktu,sisa_waktu]=greedyMaxProfit(newArray);
+                }
+
+                hasil_hitung.innerHTML=`
+                <table class="tabel_hasil">
+                    <tr>
+                        <th colspan = 2>Greedy by ${greedy_variasi}</td>
+                    </tr>
+                    <tr>
+                        <td>Pekerjaan yang dijadwalkan:</td>
+                        <td>
+                            ${jadwal_pekerjaan}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Total Profit:</td>
+                        <td>
+                            ${total_profit}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Total Waktu:</td>
+                        <td>
+                            ${total_waktu}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Sisa Waktu:</td>
+                        <td>
+                            ${sisa_waktu}
+                        </td>
+                    </tr>
+                </table>
+                `   
+            }
+            else if (greedy_variasi=="weight") {
+                if (greedy_tipe=="Min") {
+                    [jadwal_pekerjaan,total_profit,total_waktu,sisa_waktu]=greedyMinWeight(newArray);
+                }
+                else if(greedy_tipe=="Max"){
+                    [jadwal_pekerjaan,total_profit,total_waktu,sisa_waktu]=greedyMaxWeight(newArray);
+                }
+
+                hasil_hitung.innerHTML=`
+                <table  class="tabel_hasil">
+                    <tr>
+                        <th colspan = 2>Greedy by ${greedy_variasi}</td>
+                    </tr>
+                    <tr>
+                        <td>Pekerjaan yang dijadwalkan:</td>
+                        <td>
+                            ${jadwal_pekerjaan}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Total Profit:</td>
+                        <td>
+                            ${total_profit}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Total Waktu:</td>
+                        <td>
+                            ${total_waktu}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Sisa Waktu:</td>
+                        <td>
+                            ${sisa_waktu}
+                        </td>
+                    </tr>
+                </table>
+                `  
+            }
+            else if (greedy_variasi=="density") {
+                if (greedy_tipe=="Min") {
+                    [jadwal_pekerjaan,total_profit,total_waktu,sisa_waktu]=greedyMinDensity(newArray);
+                }
+                else if(greedy_tipe=="Max"){
+                    [jadwal_pekerjaan,total_profit,total_waktu,sisa_waktu]=greedyMaxDensity(newArray);
+                }
+
+                hasil_hitung.innerHTML=`
+                <table class="tabel_hasil">
+                    <tr>
+                        <th colspan = 2>Greedy by ${greedy_variasi}</td>
+                    </tr>
+                    <tr>
+                        <td>Pekerjaan yang dijadwalkan:</td>
+                        <td>
+                            ${jadwal_pekerjaan}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Total Profit:</td>
+                        <td>
+                            ${total_profit}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Total Waktu:</td>
+                        <td>
+                            ${total_waktu}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Sisa Waktu:</td>
+                        <td>
+                            ${sisa_waktu}
+                        </td>
+                    </tr>
+                </table>
+                `
+            }
+    }
+  </script>
+</html>
